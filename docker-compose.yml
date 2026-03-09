@@ -1,0 +1,23 @@
+﻿services:
+  app:
+    container_name: task-manager-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: task-manager:local
+    ports:
+      - "3000:3000"
+    environment:
+      NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL:-https://dummyjson.com}
+      NEXT_PUBLIC_SOCKET_URL: ${NEXT_PUBLIC_SOCKET_URL:-}
+      NODE_ENV: production
+    restart: unless-stopped
+
+  registry:
+    container_name: task-manager-registry
+    image: registry:2
+    ports:
+      - "5000:5000"
+    restart: unless-stopped
+    profiles:
+      - registry
