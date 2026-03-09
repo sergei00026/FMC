@@ -110,7 +110,7 @@ export const taskManagerApi = createApi({
         const userId = state.auth.userId;
 
         if (!userId) {
-          return { data: [] };
+          return { data: [] as ITask[] };
         }
 
         const result = await baseQuery({
@@ -118,8 +118,10 @@ export const taskManagerApi = createApi({
           url: `/todos/user/${userId}`,
         });
 
-        if ('error' in result) {
-          return result;
+        if (result.error) {
+          return {
+            error: result.error,
+          };
         }
 
         const payload = result.data as IDummyTodosResponse;
